@@ -82,14 +82,19 @@ public class ProductsController
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateProduct(@PathVariable int id, @RequestBody Product product)
     {
-        try
-        {
-            productDao.update(id,product);
-        }
-        catch(Exception ex)
-        {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-        }
+      try{
+          if (product.getProductId() != id){
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID does not match");
+          }
+          Product product1 = productDao.getById(id);
+          if (product1 == null){
+              throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+          }
+          productDao.update(id,product);
+      } catch (Exception e){
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error");
+      }
     }
 
     @DeleteMapping("{id}")
