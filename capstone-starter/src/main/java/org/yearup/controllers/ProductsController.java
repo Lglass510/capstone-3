@@ -33,7 +33,10 @@ public class ProductsController
                                 )
     {
         try
-        {
+        { if (minPrice != null && maxPrice != null && minPrice.compareTo(maxPrice) > 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Min price can not exceed max price");
+
+        }
             return productDao.search(categoryId, minPrice, maxPrice, color);
         }
         catch(Exception ex)
