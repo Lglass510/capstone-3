@@ -23,16 +23,11 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     {
         List<Product> products = new ArrayList<>();
 
-        String sql = "SELECT * FROM products WHERE 1=1" +
+        String sql = "SELECT * FROM products WHERE 1=1 " +
                 "AND (? IS NULL OR category_id = ?"+
-                "AND (? IS NULL OR price >= ?"+
-                "AND (? IS NULL OR price <= ?"+
-                "AND (? IS NULL OR color = ?";
-
-        categoryId = categoryId == null ? -1 : categoryId;
-        minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
-        maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
-        color = color == null ? "" : color;
+                "AND (? IS NULL OR price >= ? "+
+                "AND (? IS NULL OR price <= ? "+
+                "AND (? IS NULL OR color = ? ";
 
         try (Connection connection = getConnection())
         {
